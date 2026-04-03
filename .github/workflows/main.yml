@@ -3,8 +3,6 @@ name: Android CI Апончук
 on:
   push:
     branches: [ "master" ]
-  pull_request:
-    branches: [ "master" ]
 
 jobs:
   build:
@@ -14,7 +12,7 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v4
 
-    - name: set up JDK 21 # Оновлюємо до 21 для нових версій Gradle
+    - name: set up JDK 21
       uses: actions/setup-java@v4
       with:
         java-version: '21'
@@ -22,15 +20,17 @@ jobs:
         cache: gradle
 
     - name: Grant execute permission for gradlew
-      run: chmod +x gradlew
+      # Вказуємо шлях саме до файлу всередині папки myapplication
+      run: chmod +x ./myapplication/gradlew
 
     - name: Build with Gradle Апончук
-      # Додаємо прапор --no-daemon, щоб зекономити пам'ять і уникнути зависань
-      run: ./gradlew assembleDebug --no-daemon --stacktrace
+      # Цей рядок каже системі зайти в папку myapplication перед збіркою
+      working-directory: ./myapplication
+      run: ./gradlew assembleDebug --no-daemon
 
     - name: Upload APK
-      if: success() # Завантажуємо лише якщо збірка пройшла успішно
       uses: actions/upload-artifact@v4
       with:
         name: my-app-apk
+        # Використовуємо маску, щоб знайти APK у будь-якій підпапці
         path: "**/build/outputs/apk/debug/*.apk"
