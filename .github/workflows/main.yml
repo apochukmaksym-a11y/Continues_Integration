@@ -20,17 +20,13 @@ jobs:
         cache: gradle
 
     - name: Grant execute permission for gradlew
-      # Вказуємо шлях саме до файлу всередині папки myapplication
-      run: chmod +x ./myapplication/gradlew
+      run: chmod +x gradlew
 
     - name: Build with Gradle Апончук
-      # Цей рядок каже системі зайти в папку myapplication перед збіркою
-      working-directory: ./myapplication
-      run: ./gradlew assembleDebug --no-daemon
+      run: ./gradlew assembleDebug
 
     - name: Upload APK
       uses: actions/upload-artifact@v4
       with:
         name: my-app-apk
-        # Використовуємо маску, щоб знайти APK у будь-якій підпапці
-        path: "**/build/outputs/apk/debug/*.apk"
+        path: app/build/outputs/apk/debug/app-debug.apk
