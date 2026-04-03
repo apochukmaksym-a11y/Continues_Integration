@@ -25,10 +25,12 @@ jobs:
       run: chmod +x gradlew
 
     - name: Build with Gradle Апончук
-      run: ./gradlew assembleDebug
+      # Ми додаємо --stacktrace, щоб у разі помилки ви бачили повний лог
+      run: ./gradlew assembleDebug --stacktrace
 
     - name: Upload APK
       uses: actions/upload-artifact@v4
       with:
         name: my-app-apk
-        path: app/build/outputs/apk/debug/app-debug.apk
+        # Використовуємо зірочки, щоб GitHub сам знайшов APK, де б він не лежав
+        path: "**/build/outputs/apk/debug/*.apk"
