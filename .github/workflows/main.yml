@@ -14,10 +14,10 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v4
 
-    - name: set up JDK 17
+    - name: set up JDK 21 # Оновлюємо до 21 для нових версій Gradle
       uses: actions/setup-java@v4
       with:
-        java-version: '17'
+        java-version: '21'
         distribution: 'temurin'
         cache: gradle
 
@@ -25,12 +25,12 @@ jobs:
       run: chmod +x gradlew
 
     - name: Build with Gradle Апончук
-      # Ми додаємо --stacktrace, щоб у разі помилки ви бачили повний лог
-      run: ./gradlew assembleDebug --stacktrace
+      # Додаємо прапор --no-daemon, щоб зекономити пам'ять і уникнути зависань
+      run: ./gradlew assembleDebug --no-daemon --stacktrace
 
     - name: Upload APK
+      if: success() # Завантажуємо лише якщо збірка пройшла успішно
       uses: actions/upload-artifact@v4
       with:
         name: my-app-apk
-        # Використовуємо зірочки, щоб GitHub сам знайшов APK, де б він не лежав
         path: "**/build/outputs/apk/debug/*.apk"
