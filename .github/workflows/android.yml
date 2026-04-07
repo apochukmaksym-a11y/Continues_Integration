@@ -1,10 +1,10 @@
-name: Android Build - Максим Апончук
+name: Android CI Апончук
 
 on:
   push:
-    branches: [ "main", "master" ]
+    branches: [ "master" ]
   pull_request:
-    branches: [ "main", "master" ]
+    branches: [ "master" ]
 
 jobs:
   build:
@@ -25,11 +25,9 @@ jobs:
         run: chmod +x gradlew
 
       - name: Build with Gradle
-        # Це саме те, що просили в завданні: assembleDebug
         run: ./gradlew assembleDebug
 
       - name: Upload APK
-        # Цей крок завантажить готовий додаток, щоб ти міг зробити скріншот
         uses: actions/upload-artifact@v4
         with:
           name: app-debug-apk
