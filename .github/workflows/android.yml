@@ -1,4 +1,4 @@
-name: Android CI Апончук
+name: Continues Integration Апончук
 
 on:
   push:
